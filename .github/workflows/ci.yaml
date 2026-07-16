@@ -1,0 +1,63 @@
+name: 🔄 CI
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'CHANGELOG.md'
+      - 'package.json'
+      - 'package-lock.json'
+
+    tags:
+      - 'v*'
+
+  workflow_dispatch:
+
+concurrency:
+  group: '${{ github.repository_id }}-${{ github.ref_name }}'
+  cancel-in-progress: ${{ github.event_name == 'push' }}
+
+# Use PAT instead of GITHUB_TOKEN to cause semantic-release to trigger tag pipeline when tag is created.
+# 'Fine-grained token' repo permissions: Contents
+
+permissions:
+  actions: write
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  meta:
+    name: Meta
+    uses: stairwaytowonderland/.github/.github/workflows/ci-meta.yaml@v1
+    permissions:
+      contents: read
+
+  release:
+    name: Release
+    needs: [meta]
+    if: needs.meta.outputs.is-release-workflow == 'true'
+    uses: ./.github/workflows/release.yaml
+    secrets: inherit
+    # To use the dispatch-workflow for the first release, uncomment the following:
+    # with:
+    #   dispatch-workflow: ${{ needs.meta.outputs.has-release-tags != 'true' && 'publish.yaml' || '' }}
+
+  publish:
+    name: Publish
+    needs: [meta]
+    if: needs.meta.outputs.is-publish-workflow == 'true'
+    uses: ./.github/workflows/publish.yaml
+    permissions:
+      contents: write
+    secrets: inherit
+    with:
+      tag: ${{ github.ref_name }}
+
+  normalize-majorver:
+    name: Normalize Major Version Tag
+    needs: [publish]
+    uses: stairwaytowonderland/.github/.github/workflows/normalize-majorver.yaml@v1
+    permissions:
+      contents: write
