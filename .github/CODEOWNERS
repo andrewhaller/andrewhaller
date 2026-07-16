@@ -4,7 +4,7 @@
 ############################################################################
 
 # Assign all directories and files to Primary Owner(s) by default
-*				@stairwaytowonderland/owners
+*				@andrewhaller
 
 # Assign the specific directory to owners responsible for GitHub configuration and workflows
 /.github/		@andrewhaller
