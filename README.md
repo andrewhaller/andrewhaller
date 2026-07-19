@@ -4,7 +4,7 @@ The [**andrewhaller**](https://github.com/andrewhaller) public profile doc.
 
 > [!TIP]
 >
-> See my [org](https://github.com/andrewhaller) profile, [gists](https://gist.github.com/andrewhaller) and [lists](https://github.com/andrewhaller?tab=stars).
+> See my [org](https://github.com/stairwaytowonderland) profile, [gists](https://gist.github.com/andrewhaller) and [lists](https://github.com/andrewhaller?tab=stars).
 
 ## :card_file_box: Repository Creation & Management
 
